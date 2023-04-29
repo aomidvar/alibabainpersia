@@ -1,0 +1,95 @@
+<html>
+
+<head>
+<title>Title</title>
+</head>
+
+<body>
+
+<p>In this project three questions are addressed
+How the Machine Learning help doctors as part of Dementia Diagnosis with the highest degree of accuracy and reliability from medical record and neuropsychological assessment of AIBL.
+What are the important predictors? 
+Which part of the Computational Resources, methods of Data Mining activities are the most important and why. Algorithms, Accuracy, Pre-processing, ethical issue, etc.
+Hint: AI Ethical issue has  a fair complicated cases.
+Is there any validation model framework available to practically align  Data Mining with the needs of all their stakeholders.
+</p>
+
+<!--begin.rcode
+
+x_testdata <- read.csv("c:/users/lenovo/desktop/test.csv")
+
+x_traindata <- read.csv("c:/users/lenovo/desktop/train.csv")
+
+install.packages("lda", lib="C:/Users/YourUser/Documents/R/win-library/3.3")
+
+library(party)
+library(tidyverse)
+library(caret)
+library(ranger)
+library(e1071)
+
+str(x_traindata)
+str(x_testdata)
+x_traindata$class <-factor(x_traindata$class)
+
+svm_model<-svm(class~.,data=x_traindata, gamma=0.1)
+
+rf_model <- train(
+  class~.,
+  tuneLength = 1,
+  data = x_traindata, 
+  method = "rf",
+  trControl = trainControl(
+    method = "cv", 
+    number = 10, 
+    verboseIter = TRUE))
+  
+nb_model<-naiveBayes(x_traindata,x_traindata$class)
+nb_predict<-predict(nb_model,x_testdata,type="class")
+view(nb_predict)
+
+proc.time()
+
+
+class.svm.model <- svm(class ~ ., data = x_traindata,cost=10, cross=10,type="C-classification",kernel="radial",na.action=na.omit)
+proc.time()
+svm_predict<-predict(class.svm.model,x_testdata,type="class")
+view(svm_predict)
+
+
+
+rf_model
+nb_model
+
+
+
+AIBL.nb_model.prediction <-predict(nb_model, newdata = as.list(x_traindata, function(x) subset(x_traindata, is.na(x_traindata$class))                                                                                        ))
+
+table(x_traindata$class, AIBL.nb_model.prediction)
+
+AIBL.rf_model.prediction <-predict(rf_model, newdata = as.list(x_traindata, function(x) subset(x_traindata, is.na(x_traindata$class))                                                                                        ))
+
+
+
+class.svm.model
+svm_model
+
+end.rcode-->
+
+<p>The model are then evaluated by the comparison with the test data, with the model selected, on the Result evaluation with the help of environmental variables in Support Vector Classifier, Naïve Bayes, random forest:</p>
+
+<!--begin.rcode fig.width=7, fig.height=6
+rf_model
+nb_model
+
+
+
+AIBL.nb_model.prediction <-predict(nb_model, newdata = as.list(x_traindata, function(x) subset(x_traindata, is.na(x_traindata$class))                                                                                        ))
+
+table(x_traindata$class, AIBL.nb_model.prediction)
+
+AIBL.rf_model.prediction <-predict(rf_model, newdata = as.list(x_traindata, function(x) subset(x_traindata, is.na(x_traindata$class))                                                                                        ))
+end.rcode-->
+
+</body>
+</html>
